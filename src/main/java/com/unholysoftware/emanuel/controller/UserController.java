@@ -1,13 +1,15 @@
 package com.unholysoftware.emanuel.controller;
 
-import com.unholysoftware.emanuel.exception.ResourceNotFoundException;
 import com.unholysoftware.emanuel.model.User;
 import com.unholysoftware.emanuel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -17,38 +19,76 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            List<User> users = new ArrayList<>();
+            userRepository.findAll().forEach(users::add);
+            if (users.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(users, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable(value = "id") Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        Optional<User> userData = userRepository.findById(id);
+        if (userData.isPresent()) {
+            return new ResponseEntity<>(userData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        try {
+            User newUser = userRepository
+                    .save(new User(
+                            user.getName(),
+                            user.getEmail(),
+                            user.getPassword()
+                    ));
+            return new ResponseEntity<>(newUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable(value = "id") Long userId, @RequestBody User userDetails) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-        user.setEmail(userDetails.getEmail());
-        user.setName(userDetails.getName());
-        user.setPassword(userDetails.getPassword());
-
-        User updatedUser = userRepository.save(user);
-        return updatedUser;
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId, @RequestBody User userDetails) {
+        Optional<User> userData = userRepository.findById(userId);
+        if (userData.isPresent()) {
+            User updatedUser = userData.get();
+            updatedUser.setEmail(userDetails.getEmail());
+            updatedUser.setName(userDetails.getName());
+            updatedUser.setPassword(userDetails.getPassword());
+            return new ResponseEntity<>(userRepository.save(updatedUser), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-        userRepository.delete(user);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long userId) {
+        try {
+            userRepository.deleteById(userId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/users")
+    public ResponseEntity<HttpStatus> deleteAllUsers() {
+        try {
+            userRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
