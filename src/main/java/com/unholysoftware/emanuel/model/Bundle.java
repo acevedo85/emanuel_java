@@ -1,9 +1,14 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bundle")
+@Table(name = "bundles")
+@Getter @Setter @NoArgsConstructor
 public class Bundle {
 
     @Id
@@ -21,4 +26,34 @@ public class Bundle {
 
     @Column(name = "cost")
     private float cost;
+
+    public Bundle(String name, String description, boolean wantsSecond, float cost) {
+        this.name = name;
+        this.description = description;
+        this.wantsSecond = wantsSecond;
+        this.cost = cost;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Bundle{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", wantsSecond=" + wantsSecond +
+                ", cost=" + cost +
+                '}';
+    }
 }

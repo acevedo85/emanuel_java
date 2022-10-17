@@ -1,9 +1,14 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "request")
+@Table(name = "requests")
+@Getter @Setter @NoArgsConstructor
 public class Request {
 
     @Id
@@ -44,11 +49,7 @@ public class Request {
     @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
-    public Request() {
-    }
-
-    public Request(long id, String bundle, String model, String baseColor, String plaqueColor, String plaqueModel, String picture, String textNumber, String dedication, String attachment, float cost, Contract contract) {
-        this.id = id;
+    public Request(String bundle, String model, String baseColor, String plaqueColor, String plaqueModel, String picture, String textNumber, String dedication, String attachment, float cost, Contract contract) {
         this.bundle = bundle;
         this.model = model;
         this.baseColor = baseColor;
@@ -59,102 +60,6 @@ public class Request {
         this.dedication = dedication;
         this.attachment = attachment;
         this.cost = cost;
-        this.contract = contract;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getBundle() {
-        return bundle;
-    }
-
-    public void setBundle(String bundle) {
-        this.bundle = bundle;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getBaseColor() {
-        return baseColor;
-    }
-
-    public void setBaseColor(String baseColor) {
-        this.baseColor = baseColor;
-    }
-
-    public String getPlaqueColor() {
-        return plaqueColor;
-    }
-
-    public void setPlaqueColor(String plaqueColor) {
-        this.plaqueColor = plaqueColor;
-    }
-
-    public String getPlaqueModel() {
-        return plaqueModel;
-    }
-
-    public void setPlaqueModel(String plaqueModel) {
-        this.plaqueModel = plaqueModel;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getTextNumber() {
-        return textNumber;
-    }
-
-    public void setTextNumber(String textNumber) {
-        this.textNumber = textNumber;
-    }
-
-    public String getDedication() {
-        return dedication;
-    }
-
-    public void setDedication(String dedication) {
-        this.dedication = dedication;
-    }
-
-    public String getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
-    }
-
-    public float getCost() {
-        return cost;
-    }
-
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
-
-    public Contract getContract() {
-        return contract;
-    }
-
-    public void setContract(Contract contract) {
         this.contract = contract;
     }
 

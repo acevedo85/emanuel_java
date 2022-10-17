@@ -1,11 +1,16 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "contracts")
+@Getter @Setter @NoArgsConstructor
 public class Contract {
 
     @Id
@@ -34,54 +39,10 @@ public class Contract {
     @OneToMany(mappedBy = "contract")
     private Set<Ring> rings;
 
-    public Contract() {
-    }
-
-    public Contract(long id, Date createdAt, Date deliveredAt, String status, Costumer costumer) {
-        this.id = id;
+    public Contract(Date createdAt, Date deliveredAt, String status, Costumer costumer) {
         this.createdAt = createdAt;
         this.deliveredAt = deliveredAt;
         this.status = status;
-        this.costumer = costumer;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getDeliveredAt() {
-        return deliveredAt;
-    }
-
-    public void setDeliveredAt(Date deliveredAt) {
-        this.deliveredAt = deliveredAt;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Costumer getCostumer() {
-        return costumer;
-    }
-
-    public void setCostumer(Costumer costumer) {
         this.costumer = costumer;
     }
 

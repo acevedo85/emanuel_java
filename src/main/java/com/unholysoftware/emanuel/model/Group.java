@@ -1,10 +1,15 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "group")
+@Table(name = "groups")
+@Setter @Getter @NoArgsConstructor
 public class Group {
 
     @Id
@@ -20,48 +25,12 @@ public class Group {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "costumer_group")
+    @ManyToMany(mappedBy = "groups")
     Set<Costumer> costumers;
 
-    public Group() {
-    }
-
-    public Group(long id, String school, String career, String name) {
-        this.id = id;
+    public Group(String school, String career, String name) {
         this.school = school;
         this.career = career;
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
-    }
-
-    public String getCareer() {
-        return career;
-    }
-
-    public void setCareer(String career) {
-        this.career = career;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 

@@ -1,10 +1,15 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payments")
+@Getter @Setter @NoArgsConstructor
 public class Payment {
 
     @Id
@@ -21,11 +26,7 @@ public class Payment {
     @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
-    public Payment() {
-    }
-
-    public Payment(long id, float amount, Date paymentDate, Contract contract) {
-        this.id = id;
+    public Payment(float amount, Date paymentDate, Contract contract) {
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.contract = contract;

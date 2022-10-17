@@ -1,9 +1,14 @@
 package com.unholysoftware.emanuel.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "rings")
+@Getter @Setter @NoArgsConstructor
 public class Ring {
 
     @Id
@@ -29,11 +34,7 @@ public class Ring {
     @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
-    public Ring() {
-    }
-
-    public Ring(long id, String type, String model, float weight, String size, float cost, Contract contract) {
-        this.id = id;
+    public Ring(String type, String model, float weight, String size, float cost, Contract contract) {
         this.type = type;
         this.model = model;
         this.weight = weight;
