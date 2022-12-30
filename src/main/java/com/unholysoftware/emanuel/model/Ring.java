@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class Ring {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "type")
     private String type;

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class BundleController {
     }
 
     @GetMapping("/bundles/{id}")
-    public ResponseEntity<Bundle> getBundleById(@PathParam("id") long id) {
+    public ResponseEntity<Bundle> getBundleById(@PathVariable("id") long id) {
         Optional<Bundle> bundleData = bundleRepository.findById(id);
 
         if (bundleData.isPresent()) {
